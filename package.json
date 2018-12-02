@@ -11,7 +11,8 @@
     "helmet": "^2.1.1",
     "node-hue-api": "0",
     "request": "^2.51.0",
-    "sleep": ""
+    "sleep": "",
+    "watson-developer-cloud": "^0.10.6"
   },
   "author": "Andy Watson",
   "license": "ISC"

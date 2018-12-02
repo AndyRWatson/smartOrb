@@ -140,19 +140,20 @@ api.setLightState(bulbNumber, state)
 
 }
 
-  var bulbNumber=23;   // was 2 for oldHue
-
+  //var bulbNumber=23;   // was 2 for oldHue
+  var bulbNumber=3;
   var hueOldusername="aDRZYBIO3EJ-JeFSxPQHXZhi2OvclOF7s5ga6jRT";
 //  var hueNewusername="FWuScIwopktU8j8JvrwfvnB5SRopJQOM46hLmS9J";
-var hueNewusername="omEnscXeuN2t-vblvt4CC8QgywiM4sTCRmqf3GqY";  // {"devicetype":"terrarium#arw Andy"}
-  var hueusername=hueNewusername;;
+//var hueNewusername="omEnscXeuN2t-vblvt4CC8QgywiM4sTCRmqf3GqY";  // {"devicetype":"terrarium#arw Andy"}  //HueHome  new
+  var hueusername=hueOldusername;;
 
     var HueApi = hue.HueApi;
     var lightState = hue.lightState;
-    var huehost = "192.168.2.46";   // Hue v2
+//    var huehost = "192.168.2.18";   // Hue v1 (Philips-HueOld)
+//    var huehost = "192.168.2.46";   // Hue v2 (Home)
 //    var huehost = "9.173.152.69"; 
-//    var huehost = "192.168.2.2";  // Ethernet Adapter
-    hueusername = hueNewusername;
+    var huehost = "192.168.2.2";  // Ethernet Adapter
+    hueusername = hueOldusername;
     api = new HueApi(huehost, hueusername);
 
 
