@@ -2,12 +2,17 @@ const request = require('request');
 const hueAPI = require('node-hue-api');
 const hue = require("node-hue-api");
 var sleep = require('sleep'); 
+var brightness = 100;
 
 var spawn = require('child_process').spawn;
 
 if ( ! process.argv[2] ){
   console.log("City not defined, please run node hue.js <city>")
   process.exit(1)
+}
+
+if ( process.argv[3]){
+   brightness = process.argv[3]
 }
 
 function weatherNow(wc){
@@ -36,7 +41,7 @@ var displayError = function(err) {
 
 
 
-function setHue(weather)
+function setHue(weather,bright)
 {
 
   var r,g,b;
@@ -57,7 +62,7 @@ function setHue(weather)
         r=102,g=0,b=102;
         break;
    case "White":
-	r=0, g=0, b=0
+	r=255, g=255, b=255
 	 break; 
    case "Red":
         r=255,g=0,b=0;
@@ -81,7 +86,7 @@ function setHue(weather)
         r=0,g=70,b=100;
 }
 
-var state=lightState.create().on().rgb(r,g,b);
+var state=lightState.create().on().rgb(r,g,b).brightness(bright);
 api.setLightState(bulbNumber, state)
     .then(displayResult)
     .fail(displayError)
@@ -98,7 +103,7 @@ function lightning()
       spawn('sh', ['-c', command], { stdio: 'inherit' });
 }
 
-shspawn('afplay thunder_strike_2-Mike_Koenig-2099467696.wav');
+shspawn('afplay thunder.wav');
 
 var state=lightState.create().on().white(250,100);
 
@@ -188,7 +193,7 @@ var isColor = false;
 if (isColor == true)
 {
   console.log("Just set the color");
-  setHue(city);
+  setHue(city,brightness);
 } else
 {
 let geolocation = "http://open.mapquestapi.com/geocoding/v1/address?key=BrlRnuf0IpXHl1ubie8ZeBY7BLhlu86W&location=" + city;
@@ -209,16 +214,17 @@ request(geolocation, { json: true }, (err, res, body) => {
     var city=observation.obs_name;
     var forecast=observation.wx_phrase;
     var weather_code=observation.wx_icon;
-
+    
+    console.log("Brightness = ",brightness);
     console.log("The Weather in ",process.argv[2]," is ",forecast,"[",weather_code,"]");
     console.log("Set Hue Bulb to ",weatherNow(weather_code) );
 
     function shspawn(command) {
       spawn('sh', ['-c', command], { stdio: 'inherit' });
 }
-//shspawn(`say The Weather in ${process.argv[2]} is ${forecast}`);
- //   var rc=setHue(weatherNow(weather_code));
-  var rc=lightning();
+    shspawn(`say The Weather in ${process.argv[2]} is ${forecast}`);
+    var rc=setHue(weatherNow(weather_code),brightness);
+ // var rc=lightning();
   });
 }
 );
